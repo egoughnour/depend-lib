@@ -1,0 +1,6 @@
+{
+  "name": "Depend-lib",
+  "tagline": "Graph theory for dependencies",
+  "body": "### Depend-lib\r\nWhy? Because sometimes you want to find some structural information in your source or other non-binary files. In a very general sense.\r\n\r\n### How it works\r\nRight now I'm contemplating a workflow something like this:\r\n## Preprocessing\r\n1. General preprocessing\r\n2. Per-file preprocessing\r\n3. Optional input file list\r\n## Execution\r\n* a visitor pattern or perhaps \r\n* a method for dividing the source into addressable, referenceable or otherwise meaningfully separate parts \r\n\r\n\r\n### How to use\r\nPass in some indication of what you want out. Such as the smallest non-trivial eigenvector of your Laplacian matrix. Then you can do some agglomeration over the scalars that make up the vector. \r\n\r\n### Authors and Contributors\r\n@egoughnour so far.\r\n\r\n### License\r\n\r\nMIT.  Remind me if you don't see it here.\r\n\r\n### Support or Contact\r\nHaving trouble with Pages? Check out our [documentation](https://help.github.com/pages) or [contact support](https://github.com/contact) and we’ll help you sort it out.",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
