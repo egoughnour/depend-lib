@@ -1,0 +1,22 @@
+﻿<Properties StartupItem="DependLib.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Structure/BaseClasses/SourceElementBase.cs">
+    <Files>
+      <File FileName="SimpleComponentFinder.cs" Line="3" Column="3" />
+      <File FileName="TokenIndexMap.cs" Line="1" Column="1" />
+      <File FileName="TokenMatrix.cs" Line="1" Column="1" />
+      <File FileName="Structure/Interfaces/IDependencyMatrix.cs" Line="1" Column="1" />
+      <File FileName="Structure/Interfaces/ISourceElement.cs" Line="1" Column="1" />
+      <File FileName="Structure/Interfaces/IParsedStructure.cs" Line="1" Column="1" />
+      <File FileName="Structure/Interfaces/IStructureVisitor.cs" Line="1" Column="1" />
+      <File FileName="Structure/Interfaces/ISourceNodeMap.cs" Line="1" Column="1" />
+      <File FileName="Structure/BaseClasses/StructureVisitorBase.cs" Line="1" Column="1" />
+      <File FileName="Structure/BaseClasses/AbstractSourceNodeMap.cs" Line="17" Column="17" />
+      <File FileName="Structure/BaseClasses/SourceElementBase.cs" Line="3" Column="3" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

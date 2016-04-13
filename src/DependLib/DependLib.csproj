@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4C6155B1-B6B9-47AA-80E2-3F77EA5D522D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>DependLib</RootNamespace>
+    <AssemblyName>DependLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="MathNet.Numerics">
+      <HintPath>packages\MathNet.Numerics.3.11.0\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleComponentFinder.cs" />
+    <Compile Include="TokenIndexMap.cs" />
+    <Compile Include="TokenMatrix.cs" />
+    <Compile Include="Structure\Interfaces\IDependencyMatrix.cs" />
+    <Compile Include="Structure\Interfaces\IDependencyNode.cs" />
+    <Compile Include="Structure\Interfaces\ISourceElement.cs" />
+    <Compile Include="Structure\Interfaces\IParsedStructure.cs" />
+    <Compile Include="Structure\Interfaces\IStructureVisitor.cs" />
+    <Compile Include="Structure\Interfaces\ISourceNodeMap.cs" />
+    <Compile Include="Structure\BaseClasses\StructureVisitorBase.cs" />
+    <Compile Include="Structure\BaseClasses\SourceElementBase.cs" />
+    <Compile Include="Structure\BaseClasses\AbstractSourceNodeMap.cs" />
+    <Compile Include="Structure\BaseClasses\AbstractDependencyMatrix.cs" />
+    <Compile Include="Structure\BaseClasses\AbstractDependencyNode.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Structure\" />
+    <Folder Include="Structure\BaseClasses\" />
+    <Folder Include="Structure\Interfaces\" />
+  </ItemGroup>
+</Project>
