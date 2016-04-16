@@ -1,0 +1,14 @@
+
+*.mdb
+
+*.dll
+
+*.exe
+
+src/DependLib/obj/Debug/DependLib.csproj.FilesWrittenAbsolute.txt
+
+src/DependLib/BreakTester.cs/obj/Debug/BreakTester.csproj.FilesWrittenAbsolute.txt
+
+src/DependLib/obj/**
+
+src/DependLib/BreakTester.cs/obj/**
