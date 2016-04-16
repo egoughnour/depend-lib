@@ -11,11 +11,7 @@ namespace DependLib
 	public class SimpleComponentFinder
 	{
 
-		public int ComponentCount 
-		{
-			get;
-			set;
-		}
+		public int ComponentCount { get; set; }
 
 		public List<Component> Components { get; set; }
 
@@ -31,65 +27,19 @@ namespace DependLib
 			Components = new List<Component> ();
 			ComponentCount = (int)Math.Min (L.FiedlerVector.Count / 2.0d, maxClusterCount);
 		}
-
-		public SimpleComponentFinder (Matrix degree, Matrix adjacency, TokenIndexMap tokens, int clusterCount)
-		{
-			//var spectralDecomposition = dependencies.Evd ();
-			//var smallestEigenvector = spectralDecomposition.EigenVectors.Row (1);
-			//ComponentCount = Math.Min (smallestEigenvector.Count, clusterCount);
-			var laplacian = degree - adjacency;
-			var fiedlerVector = laplacian.Evd().EigenVectors.Row (1);
-			clusterCount = (int)Math.Min (fiedlerVector.Count (d => d != 0d) / 2.0d, clusterCount);
-			var offset = (fiedlerVector.Minimum() < 0d ? (-1.0d * fiedlerVector.Minimum()) + EPSILON : EPSILON);
-			var shifted = fiedlerVector.Add (offset);
-			var sortedElements = shifted.Select ((e,i) => new KeyValuePair<int,double> (i, e))
-				.OrderByDescending (kv => kv.Value).Reverse ().ToList ();
-			var breaks = NaturalBreaks ((from kv in sortedElements
-					select kv.Value).ToList (), clusterCount);
-			var firstGroup = sortedElements.Where (e => e.Value < breaks.ElementAt (0)).Select (e => tokens [e.Key]).ToList ();
-			var secondGroup = sortedElements.Where (e => e.Value < breaks.ElementAt (1)  && (!firstGroup.Contains(tokens[e.Key])))
-				.Select (e => tokens [e.Key]).ToList ();
-			var thirdGroup = sortedElements.Where (e => (!firstGroup.Contains(tokens[e.Key])) && (!secondGroup.Contains(tokens[e.Key])))
-				.Select (e => tokens [e.Key]).ToList ();
-
-		}
-
-
+			
 		public void CalculateComponents()
 		{
 			//shift and sort the scalar components of FiedlerVector
-			var offset = (L.FiedlerVector.Minimum() < 0d ? (-1.0d * L.FiedlerVector.Minimum()) + LargeEpsilon : LargeEpsilon);
-			var shifted = L.FiedlerVector.Add (offset);
-			var sortedElements = shifted.Select ((e,i) => new KeyValuePair<int,double> (i, e))
-				.OrderByDescending (kv => kv.Value).Reverse ().ToList ();
-			var elementValues = (from kv in sortedElements
-			                     select kv.Value).ToList ();
+			//also track the indices so the components can be correlated to the initial nodes
+			List<double> elementValues;
+			var sortedElements = SortFiedlerVector (out elementValues);
 
 			//get the breaks
 			var cutoffValues = GetBreaks (elementValues);
 
-			//add each Component to Components
 			//instantiate a component for each break
-
-			var usedNodes = new List<string> ();
-
-			for (int i = 0; i < cutoffValues.Count; i++) 
-			{
-				var clusterToAdd = new Component (L, sortedElements, cutoffValues[i]);
-				clusterToAdd.CullUsedNodes (usedNodes);
-
-				Components.Add (clusterToAdd);
-
-				usedNodes.AddRange (clusterToAdd.Nodes);
-			}
-
-			var finalCluster = new Component (L, sortedElements);
-			finalCluster.CullUsedNodes (usedNodes);
-
-			if (finalCluster.Nodes.Count > 0) 
-			{
-				Components.Add (finalCluster);
-			}
+			GenerateComponents (sortedElements, cutoffValues);
 		}
 
 		List<double> GetBreaks (List<double> elementValues)
@@ -141,66 +91,40 @@ namespace DependLib
 			return cutoffValues;
 		}
 
-		private static List<double> NaturalBreaks(List<double> sListDouble, int sClassCount)
+		void GenerateComponents (List<KeyValuePair<int, double>> sortedElements, List<double> cutoffValues)
 		{
-			var pResult = new List<double>();
-			for (int i = 0; i < sClassCount; i++)
-				pResult.Add(0);
-
-			int numdata = sListDouble.Count;
-			sListDouble.Sort();
-
-			double[,] mat1 = new double[numdata + 1, sClassCount + 1];
-			double[,] mat2 = new double[numdata + 1, sClassCount + 1];
-			for (int i = 1; i <= sClassCount; i++)
+			//first cut off the values above the specified value
+			// then remove any values already used in other components (truncating the lower half)
+			var usedNodes = new List<string> ();
+			for (int i = 0; i < cutoffValues.Count; i++) 
 			{
-				mat1[1, i] = 1;
-				mat2[1, i] = 0;
-				for (int j = 2; j <= numdata; j++)
-				{
-					mat2[j, i] = double.MaxValue;
-				}
+				var clusterToAdd = new Component (L, sortedElements, cutoffValues [i]);
+				clusterToAdd.CullUsedNodes (usedNodes);
+
+				Components.Add (clusterToAdd);
+				usedNodes.AddRange (clusterToAdd.Nodes);
 			}
 
-			double ssd = 0;
-			for (int rangeEnd = 2; rangeEnd <= numdata; rangeEnd++)
+			var finalCluster = new Component (L, sortedElements);
+
+			finalCluster.CullUsedNodes (usedNodes);
+			if (finalCluster.Nodes.Count > 0) 
 			{
-				double sumX = 0;
-				double sumX2 = 0;
-				double w = 0;
-				int dataId;
-				for (int m = 1; m <= rangeEnd; m++)
-				{
-					dataId = rangeEnd - m + 1;
-					double val = sListDouble[dataId - 1];
-					sumX2 += val * val;
-					sumX += val;
-					w++;
-					ssd = sumX2 - (sumX * sumX) / w;
-					for (int j = 2; j <= sClassCount; j++)
-					{
-						if (!(mat2[rangeEnd, j] < (ssd + mat2[dataId - 1, j - 1])))
-						{
-							mat1[rangeEnd, j] = dataId;
-							mat2[rangeEnd, j] = ssd + mat2[dataId - 1, j - 1];
-						}
-					}
-				}
-				mat1[rangeEnd, 1] = 1;
-				mat2[rangeEnd, 1] = ssd;
+				Components.Add (finalCluster);
 			}
+		}
 
-			pResult[sClassCount - 1] = sListDouble[numdata - 1];
+		List<KeyValuePair<int, double>> SortFiedlerVector (out List<double> elementValues)
+		{
+			var offset = (L.FiedlerVector.Minimum () < 0d ? (-1.0d * L.FiedlerVector.Minimum ()) + LargeEpsilon : LargeEpsilon);
+			var shifted = L.FiedlerVector.Add (offset);
 
-			int k = numdata;
-			for (int j = sClassCount; j >= 2; j--)
-			{
-				int id = (int)(mat1[k, j]) - 2;
-				pResult[j - 2] = sListDouble[id];
-				k = (int)mat1[k, j] - 1;
-			}
+			var sortedElements = shifted.Select ((e, i) => new KeyValuePair<int, double> (i, e))
+				.OrderByDescending (kv => kv.Value).Reverse ().ToList ();
 
-			return pResult;
+			elementValues = (from kv in sortedElements
+			select kv.Value).ToList ();
+			return sortedElements;
 		}
 	}
 }
