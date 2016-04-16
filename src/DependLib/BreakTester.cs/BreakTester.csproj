@@ -3,10 +3,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4C6155B1-B6B9-47AA-80E2-3F77EA5D522D}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>DependLib</RootNamespace>
-    <AssemblyName>DependLib</AssemblyName>
+    <ProjectGuid>{4E427319-5FA0-4FA6-BCAD-5CDAA07281C2}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>BreakTester.cs</RootNamespace>
+    <AssemblyName>BreakTester.cs</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -17,7 +17,7 @@
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>full</DebugType>
@@ -25,23 +25,26 @@
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="MathNet.Numerics">
-      <HintPath>packages\MathNet.Numerics.3.11.0\lib\net40\MathNet.Numerics.dll</HintPath>
+      <HintPath>..\packages\MathNet.Numerics.3.11.0\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleComponentFinder.cs" />
-    <Compile Include="TokenIndexMap.cs" />
-    <Compile Include="TokenMatrix.cs" />
-    <Compile Include="LaplacianMatrix.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\DependLib.csproj">
+      <Project>{4C6155B1-B6B9-47AA-80E2-3F77EA5D522D}</Project>
+      <Name>DependLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
