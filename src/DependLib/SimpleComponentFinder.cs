@@ -25,8 +25,8 @@ namespace DependLib
 			//ComponentCount = Math.Min (smallestEigenvector.Count, clusterCount);
 			var laplacian = degree - adjacency;
 			var fiedlerVector = laplacian.Evd().EigenVectors.Row (1);
-			clusterCount = (int)Math.Min (fiedlerVector.Count (d => d != 0d) / 3.0d, clusterCount);
-			var offset = (fiedlerVector.Minimum() < 0d ? -1.0d * fiedlerVector.Minimum() : 0d);
+			clusterCount = (int)Math.Min (fiedlerVector.Count (d => d != 0d) / 2.0d, clusterCount);
+			var offset = (fiedlerVector.Minimum() < 0d ? (-1.0d * fiedlerVector.Minimum()) + EPSILON : EPSILON);
 			var shifted = fiedlerVector.Add (offset);
 			var sortedElements = shifted.Select ((e,i) => new KeyValuePair<int,double> (i, e))
 				.OrderByDescending (kv => kv.Value).Reverse ().ToList ();
