@@ -1,50 +1,66 @@
 ﻿using System;
+using System.Linq;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra.Double;
 using Matrix = MathNet.Numerics.LinearAlgebra.Double.SparseMatrix;
 using System.Collections.Generic;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Factorization;
 
 namespace DependLib
 {
 	public class LaplacianMatrix : Matrix
 	{
 
-		private Dictionary<string,int> Degree { get; } = new Dictionary<string,int>();
-
-		private Matrix Adjacency { get; }
-
-		public TokenIndexMap Map { get; } = new TokenIndexMap();
+		public const double EigenvalueThreshold = 0.005;
 
 		public LaplacianMatrix (int order)
 			: base(order)
 		{
-			Adjacency = new Matrix (order);
 		}
+
+		public TokenIndexMap TokenMap { get; } = new TokenIndexMap();
+
+		private Evd<double> Decomposition { get; set; }
 
 		public string this[string depending]
 		{
 			set 
 			{
-				var row = Map.GetIndex (depending);
-				var column = Map.GetIndex (value);
+				if (depending == value) 
+				{
+					//do nothing because self-dependencies are not useful
+					//and they interfere with calculation of degree
+					return;
+				}
+				var row = TokenMap.GetIndex (depending);
+				var column = TokenMap.GetIndex (value);
 
-				var degreeEntryExists = Adjacency.Row (row).AbsoluteMaximum () > 0d;
-				var adjacencyEntryNotSet = (!degreeEntryExists)
-				                           || (Math.Abs (Adjacency [row, column]) < 0.5d);
+				var adjacencyEntryNotSet = this[row, column].CoerceZero() == 0d;
+
 				if (adjacencyEntryNotSet) 
 				{ 
-					if (!degreeEntryExists) 
-					{
-						Degree [depending] = 0;
-					}
-					Degree [depending] = Degree[depending] + 1;
-					Adjacency [row, column] = 1.0d;
+					//increase degree
+					this [row, row].Increment ();
+
+					//increment adjacency
+					//(inverted to allow use without further processing)
+					this [row, column].Decrement ();
 				}
 				//else do nothing because this is not a multigraph
 			}
 		}
 
-
+		public Vector<double> FiedlerVector
+		{
+			get 
+			{
+				Decomposition = this.Evd();
+				var firstSpectralScalar = Decomposition.EigenValues.EnumerateIndexed (0).First ();
+				var firstVector =  Decomposition.EigenVectors.Row(firstSpectralScalar.Item1);
+				return firstVector;
+			}
+		}
 	}
 }
 
