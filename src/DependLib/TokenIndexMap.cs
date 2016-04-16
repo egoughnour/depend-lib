@@ -23,6 +23,7 @@ namespace DependLib
 		{
 			Insert (Token.Count, token);
 		}
+	
 
 		public int GetIndex(string token)
 		{
