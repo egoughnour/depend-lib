@@ -40,6 +40,7 @@
     <Compile Include="TokenIndexMap.cs" />
     <Compile Include="TokenMatrix.cs" />
     <Compile Include="LaplacianMatrix.cs" />
+    <Compile Include="Component.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

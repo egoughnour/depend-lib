@@ -12,8 +12,6 @@ namespace DependLib
 	public class LaplacianMatrix : Matrix
 	{
 
-		public const double EigenvalueThreshold = 0.005;
-
 		public LaplacianMatrix (int order)
 			: base(order)
 		{
