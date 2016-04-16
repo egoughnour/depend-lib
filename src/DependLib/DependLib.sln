@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependLib", "DependLib.csproj", "{4C6155B1-B6B9-47AA-80E2-3F77EA5D522D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BreakTester", "BreakTester.cs\BreakTester.csproj", "{4E427319-5FA0-4FA6-BCAD-5CDAA07281C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{4C6155B1-B6B9-47AA-80E2-3F77EA5D522D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C6155B1-B6B9-47AA-80E2-3F77EA5D522D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C6155B1-B6B9-47AA-80E2-3F77EA5D522D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E427319-5FA0-4FA6-BCAD-5CDAA07281C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E427319-5FA0-4FA6-BCAD-5CDAA07281C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E427319-5FA0-4FA6-BCAD-5CDAA07281C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E427319-5FA0-4FA6-BCAD-5CDAA07281C2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

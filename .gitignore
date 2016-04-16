@@ -1,0 +1,15 @@
+src/DependLib/obj/**
+
+src/**/*.userprefs
+
+*.dll
+
+*.mdb
+
+*.exe
+
+*.userprefs
+
+*.userprefs
+
+src/DependLib/DependLib.userprefs
