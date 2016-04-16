@@ -39,11 +39,11 @@ namespace DependLib
 				if (adjacencyEntryNotSet) 
 				{ 
 					//increase degree
-					this [row, row].Increment ();
+					this [row, row] = this [row, row].Increment();
 
 					//increment adjacency
 					//(inverted to allow use without further processing)
-					this [row, column].Decrement ();
+					this[row, column] = this [row, column].Decrement();
 				}
 				//else do nothing because this is not a multigraph
 			}
@@ -54,9 +54,7 @@ namespace DependLib
 			get 
 			{
 				Decomposition = this.Evd();
-				var firstSpectralScalar = Decomposition.EigenValues.EnumerateIndexed (0).First ();
-				var firstVector =  Decomposition.EigenVectors.Row(firstSpectralScalar.Item1);
-				return firstVector;
+				return Decomposition.EigenVectors.Row (1);
 			}
 		}
 	}

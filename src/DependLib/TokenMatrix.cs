@@ -17,6 +17,7 @@ namespace DependLib
 
 		public TokenIndexMap Map { get; } = new TokenIndexMap();
 
+
 		public int this[string label]
 		{
 			get
