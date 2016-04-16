@@ -24,6 +24,16 @@ namespace DependLib
 			Insert (Token.Count, token);
 		}
 
+		public int GetIndex(string token)
+		{
+			if (Index.ContainsKey (token)) 
+			{
+				return Index[token];
+			}
+			Insert (token);
+			return Index [token];
+		}
+
 		public int this[string value]
 		{
 			get{ return Index [value]; }
