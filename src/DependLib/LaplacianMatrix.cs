@@ -39,11 +39,11 @@ namespace DependLib
 				if (adjacencyEntryNotSet) 
 				{ 
 					//increase degree
-					this [row, row] = this [row, row].Increment();
+					this [row, row] = this [row, row] + 1.0d;
 
 					//increment adjacency
 					//(inverted to allow use without further processing)
-					this[row, column] = this [row, column].Decrement();
+					this[row, column] = this [row, column] - 1.0d;
 				}
 				//else do nothing because this is not a multigraph
 			}
