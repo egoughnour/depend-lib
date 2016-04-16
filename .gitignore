@@ -13,3 +13,5 @@ src/**/*.userprefs
 *.userprefs
 
 src/DependLib/DependLib.userprefs
+
+src/DependLib/BreakTester.cs/obj/**

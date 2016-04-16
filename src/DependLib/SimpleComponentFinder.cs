@@ -29,12 +29,14 @@ namespace DependLib
 			var offset = (fiedlerVector.Minimum() < 0d ? -1.0d * fiedlerVector.Minimum() : 0d);
 			var shifted = fiedlerVector.Add (offset);
 			var sortedElements = shifted.Select ((e,i) => new KeyValuePair<int,double> (i, e))
-				.OrderByDescending (kv => kv.Key).Reverse ().ToList ();
+				.OrderByDescending (kv => kv.Value).Reverse ().ToList ();
 			var breaks = NaturalBreaks ((from kv in sortedElements
 					select kv.Value).ToList (), clusterCount);
-			var firstGroup = shifted.Where (e => e < breaks.ElementAt (0)).Select ((e, i) => tokens [i]).ToList ();
-			var secondGroup = shifted.Where (e => e < breaks.ElementAt (1)).Select ((e, i) => tokens [i]).ToList ();
-			var thirdGroup = shifted.Where (e => e > breaks.ElementAt (1)).Select ((e, i) => tokens [i]).ToList ();
+			var firstGroup = sortedElements.Where (e => e.Value < breaks.ElementAt (0)).Select (e => tokens [e.Key]).ToList ();
+			var secondGroup = sortedElements.Where (e => e.Value < breaks.ElementAt (1)  && (!firstGroup.Contains(tokens[e.Key])))
+				.Select (e => tokens [e.Key]).ToList ();
+			var thirdGroup = sortedElements.Where (e => (!firstGroup.Contains(tokens[e.Key])) && (!secondGroup.Contains(tokens[e.Key])))
+				.Select (e => tokens [e.Key]).ToList ();
 
 		}
 
